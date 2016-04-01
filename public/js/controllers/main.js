@@ -28,7 +28,7 @@ angular.module('foodController', [])
             }
         };
 
-		// GET =====================================================================
+		// Default GETs updateding all tables
 		// when landing on the page, get all foods and show them
 		// use the service to get all the foods
 		Foods.get()
@@ -75,7 +75,8 @@ angular.module('foodController', [])
             });
 
 
-		// MENU ==================================================================
+		// Current Orders *************************************************************
+
 		// when submitting the add form, send the text to the node API
 		$scope.createFood = function() {
 
@@ -155,7 +156,8 @@ angular.module('foodController', [])
 		};
 
 
-        // Sorting Methods called
+        // Sorting Methods called **************************************************
+
         $scope.sortFoodByName = function () {
             if($scope.sortByName === true)
             {
@@ -193,7 +195,7 @@ angular.module('foodController', [])
             {
                 $scope.sortByDate = true;
             }
-            // Sort by price high to low
+
             $scope.orders.sort(sort_by('ordertime', $scope.sortByDate, String));
 
         };
@@ -207,7 +209,7 @@ angular.module('foodController', [])
             {
                 $scope.sortByCount = true;
             }
-            // Sort by price high to low
+            // Sort by count
             $scope.ordersconsol.sort(sort_by('count', $scope.sortByCount, parseInt));
 
         };
@@ -220,12 +222,14 @@ angular.module('foodController', [])
             {
                 $scope.sortBySales = true;
             }
-            // Sort by price high to low
+            // Sort by amt
             $scope.ordersconsol.sort(sort_by('amt', $scope.sortBySales));
 
         };
-        // CREATE MENU ==================================================================
-        // when submitting the add form, send the text to the node API
+
+
+        //  MENU related Methods==================================================================
+
         $scope.createMenuFood = function() {
 
             // if form is empty, nothing will happen
@@ -286,7 +290,6 @@ angular.module('foodController', [])
                         $scope.foodsmenu = data; // assign our new list of foods
                         $scope.menu = {};
                     });
-
             }
         }
 	}]);

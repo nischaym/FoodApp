@@ -152,18 +152,13 @@ module.exports = function (app) {
     });
 
     //*****************************
-    // MENU
+    // MENU Builder APIs
     //*****************************
 
     app.get('/api/foodmenu', function (req, res) {
         // use mongoose to get all foods in the database
         getFoodMenu(res);
     });
-
-
-
-
-
 
     app.post('/api/foodmenu', function (req, res) {
 
@@ -213,7 +208,7 @@ module.exports = function (app) {
 
 
     //***************************************************************
-    //  order history
+    //  order history APIs
     //****************************************************************
 
     app.get('/api/order', function (req, res) {
@@ -273,8 +268,10 @@ module.exports = function (app) {
 
 
     });
+
     // application -------------------------------------------------------------
     app.get('*', function (req, res) {
         res.sendFile(__dirname + '/public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
+
 };
