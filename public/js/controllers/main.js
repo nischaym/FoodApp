@@ -12,6 +12,7 @@ angular.module('foodController', [])
         $scope.sortByPrice = true;
         $scope.sortByDate = true;
         $scope.sortByCount = true;
+        $scope.sortBySales = true;
         var sort_by = function(field, reverse, primer){
 
             var key = primer ?
@@ -202,6 +203,19 @@ angular.module('foodController', [])
             }
             // Sort by price high to low
             $scope.ordersconsol.sort(sort_by('count', $scope.sortByCount, parseInt));
+
+        };
+        $scope.sortOrderBySales = function () {
+            if($scope.sortBySales === true)
+            {
+                $scope.sortBySales = false;
+            }
+            else
+            {
+                $scope.sortBySales = true;
+            }
+            // Sort by price high to low
+            $scope.ordersconsol.sort(sort_by('amt', $scope.sortBySales));
 
         };
         // CREATE MENU ==================================================================
