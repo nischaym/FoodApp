@@ -1,0 +1,27 @@
+Hi,
+
+Thanks for the challenge,
+Here are the few things i did apart from the 4 steps which were required by default.
+
+Menu
+1. This is a lookup menu created by the user/chef, he can do all the CRUD operations required 
+	-- To add a new item just type the name of the food and the price in $, The price
+		should be a number and the fields cannot be empty and click on the plus mark.
+	-- To Delete a existing menu, click on the cross markin the Menu table
+	-- To update the existing Menu item , click on the pencil mark, this will put the item
+			on the  editing box and now the item can be updated as required and the click on
+			tick mark
+
+2. The Current order table shows the current order, only the items existing in the Menu can be
+	added else the system will throw an error, the cost the item need not be enter as this will be	
+		taken from the menu table.
+		
+3. Once the current order is done, the chef can click on the check box to delete it.
+
+4. once the item is removed from the the current order table, the item is updated in the order history
+	table. you can view this in two tables.
+	-- first tables shows the table in time sorted order.
+	-- in second table you can view the consolidated data of all the orders already served
+	Data will not be pushed into this view until the chef deletes the order in his current orders.
+	
+5. you can sort the items based on name, price, count and total earning from that item etc.
