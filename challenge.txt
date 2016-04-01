@@ -12,7 +12,7 @@ Menu
 			on the  editing box and now the item can be updated as required and the click on
 			tick mark
 
-2. The Current order table shows the current order, only the items existing in the Menu can be
+2. The Current order table shows the current orders, only the items existing in the Menu can be
 	added else the system will throw an error, the cost the item need not be enter as this will be	
 		taken from the menu table.
 		
@@ -24,4 +24,5 @@ Menu
 	-- in second table you can view the consolidated data of all the orders already served
 	Data will not be pushed into this view until the chef deletes the order in his current orders.
 	
-5. you can sort the items based on name, price, count and total earning from that item etc.
+5. you can sort the items based on name, price, count and total earning from that item etc by clicking 
+on the sorting icons beside the table headers.

@@ -13,6 +13,8 @@ angular.module('foodController', [])
         $scope.sortByDate = true;
         $scope.sortByCount = true;
         $scope.sortBySales = true;
+
+        // Sorting Function
         var sort_by = function(field, reverse, primer){
 
             var key = primer ?
@@ -25,6 +27,7 @@ angular.module('foodController', [])
                 return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
             }
         };
+
 		// GET =====================================================================
 		// when landing on the page, get all foods and show them
 		// use the service to get all the foods
@@ -70,7 +73,9 @@ angular.module('foodController', [])
                 console.log("blah blah");
                 console.log(data);
             });
-		// CREATE ==================================================================
+
+
+		// MENU ==================================================================
 		// when submitting the add form, send the text to the node API
 		$scope.createFood = function() {
 
@@ -150,6 +155,7 @@ angular.module('foodController', [])
 		};
 
 
+        // Sorting Methods called
         $scope.sortFoodByName = function () {
             if($scope.sortByName === true)
             {
