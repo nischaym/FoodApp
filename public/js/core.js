@@ -1,1 +1,1 @@
-angular.module('FoodApp', ['foodController', 'foodService','foodMenuService']);
+angular.module('FoodApp', ["ngRoute",'foodController', 'foodService','foodMenuService','orderHistoryService']);

@@ -1,12 +1,29 @@
 angular.module('foodController', [])
 
 	// inject the Food service factory into our controller
-	.controller('mainController', ['$scope','$http','Foods','FoodMenu',function($scope, $http, Foods,FoodMenu) {
+	.controller('mainController', ['$scope','$http','Foods','FoodMenu','OrderHistory',function($scope, $http, Foods,FoodMenu,OrderHistory) {
 		$scope.menu = {};
         $scope.formData = {};
         $scope.total = 0;
 		$scope.loading = true;
+        $scope.totalsales = 0;
+        $scope.ordersconsol= {};
+        $scope.sortByName = true;
+        $scope.sortByPrice = true;
+        $scope.sortByDate = true;
+        $scope.sortByCount = true;
+        var sort_by = function(field, reverse, primer){
 
+            var key = primer ?
+                function(x) {return primer(x[field])} :
+                function(x) {return x[field]};
+
+            reverse = !reverse ? 1 : -1;
+
+            return function (a, b) {
+                return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+            }
+        };
 		// GET =====================================================================
 		// when landing on the page, get all foods and show them
 		// use the service to get all the foods
@@ -31,6 +48,27 @@ angular.module('foodController', [])
                 console.log(data);
             });
 
+        OrderHistory.get()
+            .success(function(data) {
+            $scope.orders = data;
+            $scope.loading = false;
+            console.log(data);
+        });
+
+        OrderHistory.getTotal()
+            .success(function(data) {
+                $scope.totalsales = data[0].total;
+                $scope.loading = false;
+                console.log(data);
+            });
+
+        OrderHistory.getConsolTotal()
+            .success(function(data) {
+                $scope.ordersconsol = data;
+                $scope.loading = false;
+                console.log("blah blah");
+                console.log(data);
+            });
 		// CREATE ==================================================================
 		// when submitting the add form, send the text to the node API
 		$scope.createFood = function() {
@@ -88,44 +126,84 @@ angular.module('foodController', [])
                             //$scope.loading = false;
                             console.log(data);
                         });
+                    OrderHistory.get()
+                        .success(function(data) {
+                            $scope.orders = data;
+                            $scope.loading = false;
+                            console.log(data);
+                        });
+                    OrderHistory.getTotal()
+                        .success(function(data) {
+                            $scope.totalsales = data[0].total;
+                            $scope.loading = false;
+                            console.log(data);
+                        });
+                    OrderHistory.getConsolTotal()
+                        .success(function(data) {
+                            $scope.ordersconsol = data;
+                            $scope.loading = false;
+                            console.log("blah blah");
+                            console.log(data);
+                        });
 				});
 		};
 
 
-        $scope.sortFood = function () {
-
-            function dynamicSortMultiple() {
-                /*
-                 * save the arguments object as it will be overwritten
-                 * note that arguments object is an array-like object
-                 * consisting of the names of the properties to sort by
-                 */
-                var props = arguments;
-                return function (obj1, obj2) {
-                    var i = 0, result = 0, numberOfProperties = props.length;
-                    /* try getting a different result from 0 (equal)
-                     * as long as we have extra properties to compare
-                     */
-                    while(result === 0 && i < numberOfProperties) {
-                        result = dynamicSort(props[i])(obj1, obj2);
-                        i++;
-                    }
-                    return result;
-                }
-            }
-
-            if($scope.foods == undefined)
+        $scope.sortFoodByName = function () {
+            if($scope.sortByName === true)
             {
-                // do Nothing
-                alert("No Items");
+                $scope.sortByName = false;
             }
             else
             {
-                console.log($scope.foods.sort());
+                $scope.sortByName = true;
             }
+            // Sort by price high to low
+            $scope.orders.sort(sort_by('foodname', $scope.sortByName, String));
+
         };
 
+        $scope.sortFoodByPrice = function () {
+            if($scope.sortByPrice === true)
+            {
+                $scope.sortByPrice = false;
+            }
+            else
+            {
+                $scope.sortByPrice = true;
+            }
+            // Sort by price high to low
+            $scope.orders.sort(sort_by('price', $scope.sortByPrice, parseInt));
 
+        };
+
+        $scope.sortFoodByDate = function () {
+            if($scope.sortByDate === true)
+            {
+                $scope.sortByDate = false;
+            }
+            else
+            {
+                $scope.sortByDate = true;
+            }
+            // Sort by price high to low
+            $scope.orders.sort(sort_by('ordertime', $scope.sortByDate, String));
+
+        };
+
+        $scope.sortOrderByCount = function () {
+            if($scope.sortByCount === true)
+            {
+                $scope.sortByCount = false;
+            }
+            else
+            {
+                $scope.sortByCount = true;
+            }
+            // Sort by price high to low
+            $scope.ordersconsol.sort(sort_by('count', $scope.sortByCount, parseInt));
+
+        };
         // CREATE MENU ==================================================================
         // when submitting the add form, send the text to the node API
         $scope.createMenuFood = function() {

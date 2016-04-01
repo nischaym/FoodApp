@@ -1,5 +1,6 @@
 var Food = require('./models/food');
 var FoodMenu = require('./models/foodmenu');
+var OrderHistories = require('./models/orderhistory');
 
 function getFoods(res) {
     Food.find(function (err, foods) {
@@ -27,11 +28,23 @@ function getFoodMenu(res) {
 }
 ;
 
+function getOrderHistory(res) {
+    OrderHistories.find(function (err, oh) {
 
+        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+        if (err) {
+            res.send(err);
+        }
+
+        res.json(oh); // return all foods in JSON format
+    });
+}
+;
 
 
 module.exports = function (app) {
 
+    console.log("insode");
     // api ---------------------------------------------------------------------
     // get all foods
     app.get('/api/foods', function (req, res) {
@@ -113,6 +126,21 @@ module.exports = function (app) {
 
     // delete a food
     app.delete('/api/foods/:food_id', function (req, res) {
+
+        Food.find({_id:req.params.food_id},function(err , foods){
+            console.log('response from db');
+            console.log(foods);
+           // deferred.resolve(foods);
+
+            OrderHistories.create({
+                foodname: foods[0].foodname,
+                price: foods[0].price,
+                ordertime: foods[0].ordertime,
+                count : 1
+            });
+        });
+
+
         Food.remove({
             _id: req.params.food_id
         }, function (err, food) {
@@ -134,10 +162,7 @@ module.exports = function (app) {
 
 
 
-    // application -------------------------------------------------------------
-    app.get('*', function (req, res) {
-        res.sendFile(__dirname + '/public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
-    });
+
 
 
     app.post('/api/foodmenu', function (req, res) {
@@ -184,5 +209,72 @@ module.exports = function (app) {
             getFoodMenu(res);
         });
 
+    });
+
+
+    //***************************************************************
+    //  order history
+    //****************************************************************
+
+    app.get('/api/order', function (req, res) {
+        // use mongoose to get all foods in the database
+        getOrderHistory(res);
+    })
+
+    app.get('/api/totalorder', function (req, res) {
+        // use mongoose to get all foods in the database
+        OrderHistories.aggregate({ $group: {
+            _id: null,
+            totalsum: {
+                $sum: "$price"
+            }
+        } }, function (err, total1) {
+            if (err)
+                res.send(err);
+
+            if(total1.length == 0)
+            {
+                var t = 0;
+            }
+            else
+            {
+                var t = total1[0].totalsum +((total1[0].totalsum * 7.5)/100);
+            }
+
+            var newTotal = [
+                {total:t}
+            ];
+
+            res.json(newTotal);
+            // get and return all the foods after you create another
+            //getFoods(res);
+        });
+        //getOrderHistory(res);
+    });
+
+    app.get('/api/consolorder', function (req, res) {
+
+        OrderHistories.aggregate(
+            [
+                {
+                    $group:
+                    {
+                        _id: { food: "$foodname" },
+                        amt: { $sum: "$price"} ,
+                        count: { $sum: 1 }
+                    }
+                }
+            ],function(err,output){
+                if (err)
+                    res.send(err);
+
+                res.json(output);
+            });
+
+
+    });
+    // application -------------------------------------------------------------
+    app.get('*', function (req, res) {
+        res.sendFile(__dirname + '/public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
 };

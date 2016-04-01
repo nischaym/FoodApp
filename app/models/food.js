@@ -6,8 +6,8 @@ module.exports = mongoose.model('Food', {
         default: '',
         price:Number,
         default:0,
-        customername: {type :String,
-        default: 'table 1'},
+        //customername: {type :String,
+        //default: 'table 1'},
         ordertime: {type:Date,
         default: Date.now},
 });

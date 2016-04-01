@@ -17,6 +17,7 @@
 
 	<!-- SPELLS -->
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script><!-- load angular -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular-route.js"></script>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
 
@@ -24,27 +25,8 @@
 	<script src="js/services/food.js"></script> <!-- load our todo service -->
 	<script src="js/core.js"></script> <!-- load our main application -->
     <script src="js/services/foodMenu.js"></script> <!-- load our main application -->
-    <style>
+    <script src="js/services/orderHistory.js"></script>
 
-        .chart div {
-            font: 10px sans-serif;
-            background-color: steelblue;
-            text-align: right;
-            padding: 3px;
-            margin: 1px;
-            color: white;
-        }
-
-    </style>
-
-    <script>
-        d3.select(".chart")
-                .selectAll("div")
-                .data(data)
-                .enter().append("div")
-                .style("width", function(d) { return d * 10 + "px"; })
-                .text(function(d) { return d; });
-    </script>
 
 </head>
 <!-- SET THE CONTROLLER -->
@@ -56,14 +38,7 @@
 			<h1>I'm a Food-aholic <span class="label label-info">{{ foods.length }}</span></h1>
 		</div>
 
-        <div class="chart">
-            <!--<div style="width: 40px;">4</div>-->
-            <!--<div style="width: 80px;">8</div>-->
-            <!--<div style="width: 150px;">15</div>-->
-            <!--<div style="width: 160px;">16</div>-->
-            <!--<div style="width: 230px;">23</div>-->
-            <!--<div style="width: 420px;">42</div>-->
-        </div>
+
 
         <!-- TODO LIST -->
 		<div id="food-list" class="row">
@@ -87,10 +62,7 @@
 								</th>
 								<th>
 									Food Name
-                                    <button ng-click="sortFood()" type="button" class="btn btn-default" aria-label="Left Align">
-                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                    </button>
-								</th>
+    							</th>
 								<th>
 									Price in $
 								</th>
@@ -190,7 +162,108 @@
 			</table>
 		</div>
 
-		<div class="text-center text-muted">
+
+        <!--ORDER HISTORY-->
+
+        <div>
+            <h2>
+                Order History with Timestamp
+            </h2>
+
+            <table class="table table-bordered">
+
+                <thead>
+                <tr>
+                    <th>
+                        Food Name
+                        <button ng-click="sortFoodByName()"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></button>
+                    </th>
+                    <th>
+                        Date/Time of Order
+                        <button ng-click="sortFoodByDate()"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></button>
+
+                    </th>
+                    <th>
+						Price for Each
+                        <button ng-click="sortFoodByPrice()"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></button>
+
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="order in orders">
+                        <td>
+                            {{order.foodname}}
+                        </td>
+                        <td>
+                            {{order.ordertime | date:'M/d/yyyy HH:mm:ss Z'}}
+                        </td>
+                        <td>
+                            {{order.price}}
+                        </td>
+                    </tr>
+				<tr>
+					<td colspan="2">
+						Total Sales
+					</td>
+					<td>
+						{{totalsales}}
+					</td>
+				</tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <div>
+            <h2>
+                Order History Consolidated
+            </h2>
+
+            <table class="table table-bordered">
+
+                <thead>
+                <tr>
+                    <th>
+                        Food Name
+                    </th>
+                    <th>
+                        Count
+                        <button ng-click="sortOrderByCount()"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></button>
+                    </th>
+                    <th>
+                        Sale of each item w/o Tax
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr ng-repeat="order in ordersconsol">
+                    <td>
+                        {{order._id.food}}
+                    </td>
+                    <td>
+                        {{order.count }}
+                    </td>
+                    <td>
+                        {{order.amt}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        Total Sales
+                    </td>
+                    <td>
+                        {{totalsales}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center text-muted">
 			<!--<p>A demo by <a href="http://scotch.io">Scotch</a>.</p>-->
 			<!--<p>Read the <a href="http://scotch.io/tutorials/javascript/creating-a-single-page-todo-app-with-node-and-angular">tutorial</a>.</p>-->
 		</div>
