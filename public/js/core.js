@@ -1,1 +1,1 @@
-angular.module('scotchTodo', ['todoController', 'todoService']);
+angular.module('FoodApp', ['foodController', 'foodService','foodMenuService']);

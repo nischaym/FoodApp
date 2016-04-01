@@ -1,0 +1,4 @@
+html 					{ overflow-y:scroll; }
+body 					{ padding-top:50px; }
+#food-list 				{ margin-bottom:30px; }
+#food-form 	 			{ margin-bottom:50px; }

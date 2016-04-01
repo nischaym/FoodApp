@@ -1,14 +1,25 @@
 {
-  "name"         : "node-todo",
-  "version"      : "0.0.1",
-  "description"  : "Simple todo application.",
-  "main"         : "server.js",
-  "author"       : "Scotch",
-  "dependencies" : {
-    "express"         : "~4.13.4",
-    "mongoose"        : "~3.8.13",
-    "morgan"          : "~1.1.1",
-    "body-parser"     : "~1.4.3",
-    "method-override" : "~2.1.1"
-  }
+  "name": "FoodApp",
+  "version": "0.0.1",
+  "description": "Simple food application.",
+  "main": "server.js",
+  "author": "Nischay",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openshift/origin-server"
+  },
+  "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": "^4.13.4",
+    "method-override": "~2.1.1",
+    "mongoose": "^3.8.39",
+    "morgan": "~1.1.1"
+  },
+  "devDependencies": {},
+  "bundleDependencies": [],
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC"
 }
