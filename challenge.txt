@@ -1,7 +1,7 @@
 Hi,
 
-Thanks for the challenge,
-Here are the few things i did apart from the 4 steps which were required by default.
+
+Here are the few things i did apart from the 4 steps.
 
 Menu
 1. This is a lookup menu created by the user/chef, he can do all the CRUD operations required 
