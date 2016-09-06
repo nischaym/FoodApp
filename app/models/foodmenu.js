@@ -4,8 +4,6 @@ var mongoose_menu = require('mongoose');
 
 module.exports = mongoose_menu.model('FoodMenu', {
 
-    foodname: String,
-    default: '',
-    price:Number,
-    default:0
+    foodname: {type: String, required:true},
+    price: {type: Number, required:true}
 });

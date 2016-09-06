@@ -229,6 +229,7 @@ angular.module('foodController', [])
 
 
         //  MENU related Methods==================================================================
+        // All Working
 
         $scope.createMenuFood = function() {
 
@@ -242,10 +243,18 @@ angular.module('foodController', [])
 
                     // if successful creation, call our get function to get all the new foods
                     .success(function(data) {
-                        $scope.loading = false;
-                        $scope.menu = {}; // clear the form so our user is ready to enter another
-                        console.log(data);
-                        $scope.foodsmenu = data; // assign our new list of foods
+
+                        if(data.message != undefined){
+                            $scope.loading = false;
+                            alert("Data is Improper");
+                        }
+                        else {
+                            $scope.loading = false;
+                            $scope.menu = {}; // clear the form so our user is ready to enter another
+                            console.log(data);
+                            $scope.foodsmenu = data; // assign our new list of foods
+                        }
+
                     });
             }
             else

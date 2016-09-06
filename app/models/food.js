@@ -1,13 +1,9 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 module.exports = mongoose.model('Food', {
 
-        foodname: String,
-        default: '',
-        price:Number,
-        default:0,
-        //customername: {type :String,
-        //default: 'table 1'},
+        foodname: {type: String, required:true},
+        price: {type:Number, required: true},
         ordertime: {type:Date,
-        default: Date.now},
+        default: Date.now}
 });

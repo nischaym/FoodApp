@@ -1,4 +1,4 @@
-var Food = require('./models/food');
+var Food = require('./models/food'); //
 var FoodMenu = require('./models/foodmenu');
 var OrderHistories = require('./models/orderhistory');
 
@@ -13,7 +13,6 @@ function getFoods(res) {
         res.json(foods); // return all foods in JSON format
     });
 }
-;
 
 function getFoodMenu(res) {
     FoodMenu.find(function (err, foodmenu) {
@@ -26,7 +25,6 @@ function getFoodMenu(res) {
         res.json(foodmenu); // return all foods in JSON format
     });
 }
-;
 
 function getOrderHistory(res) {
     OrderHistories.find(function (err, oh) {
@@ -39,12 +37,11 @@ function getOrderHistory(res) {
         res.json(oh); // return all foods in JSON format
     });
 }
-;
 
 
 module.exports = function (app) {
 
-    console.log("insode");
+    console.log("inside");
     // api ---------------------------------------------------------------------
     // get all foods
     app.get('/api/foods', function (req, res) {
@@ -55,6 +52,7 @@ module.exports = function (app) {
     //to Get Total
 
     app.get('/api/total', function (req, res) {
+
         // use mongoose to get all foods in the database
         // create a food, information comes from AJAX request from Angular
         Food.aggregate({ $group: {
@@ -66,17 +64,13 @@ module.exports = function (app) {
             if (err)
                 res.send(err);
 
-            if(total1.length == 0)
-            {
-               var t = 0;
-            }
-            else
-            {
-                var t = total1[0].totalsum +((total1[0].totalsum * 7.5)/100);
-            }
+            let t =0;
 
-            var newTotal = [
-                {total:t}
+            if(total1.length != 0)
+                t = total1[0].totalsum +((total1[0].totalsum * 7.5)/100);
+
+            const newTotal = [
+                {total:t }
             ];
 
             res.json(newTotal);
@@ -127,27 +121,24 @@ module.exports = function (app) {
     // delete a food
     app.delete('/api/foods/:food_id', function (req, res) {
 
-        Food.find({_id:req.params.food_id},function(err , foods){
+        Food.find({_id: req.params.food_id},function(err , foods){
             console.log('response from db');
             console.log(foods);
-           // deferred.resolve(foods);
 
-            OrderHistories.create({
-                foodname: foods[0].foodname,
-                price: foods[0].price,
-                ordertime: foods[0].ordertime,
-                count : 1
+            OrderHistories.create({foodname: foods[0].foodname, price: foods[0].price, ordertime: foods[0].ordertime, count : 1}, (err,response) => {
+
+                Food.remove({_id: req.params.food_id}, function (err, food) {
+                    if (err)
+                        res.send(err);
+
+                    Food.find(function (err, foods) {
+                        if (err)
+                            res.send(err);
+
+                        res.send(foods);
+                    });
+                });
             });
-        });
-
-
-        Food.remove({
-            _id: req.params.food_id
-        }, function (err, food) {
-            if (err)
-                res.send(err);
-
-            getFoods(res);
         });
     });
 
@@ -214,7 +205,7 @@ module.exports = function (app) {
     app.get('/api/order', function (req, res) {
         // use mongoose to get all foods in the database
         getOrderHistory(res);
-    })
+    });
 
     app.get('/api/totalorder', function (req, res) {
         // use mongoose to get all foods in the database
